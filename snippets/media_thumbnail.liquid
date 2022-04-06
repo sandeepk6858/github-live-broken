@@ -1,0 +1,45 @@
+{% case media.media_type %}
+  {% when 'image' %}
+  
+	 {% assign j = 0 %}  
+	  {% for image in product.images %}
+		{% if j == count_thumbnail %}
+			{%- assign image_id = image.id  -%}
+			{% assign count_thumbnail = count_thumbnail | plus: 1 %}
+			{% break %}
+		{% else %}
+			{% assign j = j | plus: 1 %}
+			{%- assign image_id_match = image.id  -%}
+		{% endif %}
+		
+	  {% endfor %}
+      <li class="grid__item product-single__thumbnails-item js">
+		<a href="{{ media.src | img_url: product_image_zoom_size, scale: product_image_scale }}"
+		   class="text-link product-single__thumbnail product-single__thumbnail--{{ section.id }} demo"
+		   data-thumbnail-id="{{ image_id }}" data-image-id="{{image_id_match}}"
+		   {% if enable_zoom %}data-zoom="{{ media.src | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+			 <img class="product-single__thumbnail-image stop_vid" src="{{ media.src | img_url: '110x110', scale: 2 }}" alt="{{ media.alt | escape }}">
+		</a>
+	  </li>
+  {% when 'external_video' %}
+     
+	<li class="grid__item product-single__thumbnails-item js">
+		<a data-thumbnail-id="{{ media.id }}" class="product-single__thumbnail--{{ section.id }} demo"> 
+		  <img style="margin-top: 13px;" class="product-single__thumbnail-image" src="{{ media | img_url: '110x110', scale: 2 }}" alt="{{ media.alt }}">
+		</a>
+	 </li>
+  {% when 'video' %}
+	  <li class="grid__item product-single__thumbnails-item js">
+		<a data-thumbnail-id="{{ media.id }}" class="product-single__thumbnail--{{ section.id }} demo">
+		  <img style="margin-top: 13px;" class="product-single__thumbnail-image stop_vid" src="{{ media | img_url: '110x110', scale: 2 }}" alt="{{ media.alt }}">
+		</a>
+	 </li>
+  {% when 'VideoDrop' %}
+     
+     <li class="grid__item product-single__thumbnails-item js">
+		<a data-thumbnail-id="{{ media.id }}" class="product-single__thumbnail--{{ section.id }}">
+		  <img style="margin-top: 13px;" class="product-single__thumbnail-image stop_vid" src="{{ media | img_url: '110x110', scale: 2 }}" alt="{{ media.alt }}">
+		</a>
+	 </li>
+  {% else %}
+{% endcase %}

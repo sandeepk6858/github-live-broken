@@ -1,0 +1,508 @@
+{% comment %}
+  The contents of the page.customer-google-advert.liquid template can be found in /sections/page-details-google-template.liquid
+{% endcomment %}
+<style>
+.main-content li {
+   list-style: inherit;
+   margin-left: 3em;
+}
+.main-content h2 {
+	text-transform:none;
+}
+.grid-wrapper {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.badges-image{
+   background: #fff;
+   margin: 55px 0px;
+   padding:0;
+}
+.customer_custom_review{
+   background: #fff;
+   margin-top: 55px;
+}
+@media screen and (max-width:360px)
+{
+.video_image h3 {
+    font-size: 19px !important;
+}
+}
+@media screen and (max-width:480px)
+{
+.slick-prev, .slick-next {
+    display: none !important;
+}
+.c_box .metal_box .metal-dec p{
+	margin:0;
+}
+.c_box .metal_box .metal-dec h2{
+	margin:20px 0px!important;
+}
+}
+@media screen and (max-width:550px)
+{
+.video_item {
+    width: 100% !important;
+}
+.google_advert_banner{
+	padding:100px 0px!important;
+}
+}
+
+@media screen and (max-width:920px)
+{
+.page-width_video .grid {
+    margin-left: 0 !important;
+}
+.video_section {
+    margin: 0 !important;
+}
+}
+@media screen and (max-width:1120px)
+{
+.video_image h3 {
+    font-size: 14px !important;
+}
+}
+
+@media screen and (max-width:768px)
+{
+.earings .video_item {
+    width: 100% !important;
+}
+}
+
+@media screen and (min-width: 750px) { 
+  #TextColumnImage-1555380513886 {
+	  max-width: 268px;
+	  max-height: 268px;
+  }
+  #TextColumnImageWrapper-1555380513886 {
+	  max-width: 268px;
+	  max-height: 268px;
+  }
+} 
+@media screen and (max-width: 749px) {
+  #TextColumnImage-1555380513886 {
+	  max-width: 268px;
+	  max-height: 750px;
+  }
+  .c_box{
+	width:100%!important;
+	margin:20px 0px
+}
+  #TextColumnImageWrapper-1555380513886 {
+	max-width: 268px;
+  }
+}
+@media screen and (min-width: 750px) { 
+	#TextColumnImage-1555380518083 {
+		max-width: 200px;
+		max-height: 200px;
+	}
+	#TextColumnImageWrapper-1555380518083 {
+		max-width: 200px;
+		max-height: 200px;
+	}
+} 
+@media screen and (max-width: 749px) {
+	#TextColumnImage-1555380518083 {
+	max-width: 200px;
+	max-height: 750px;
+	}
+	#TextColumnImageWrapper-1555380518083 {
+	max-width: 200px;
+	}
+}
+@media screen and (min-width: 750px) { 
+  #TextColumnImage-1555380520691 {
+	  max-width: 300px;
+	  max-height: 300px;
+  }
+  #TextColumnImageWrapper-1555380520691 {
+	  max-width: 300px;
+	  max-height: 300px;
+  }
+} 
+@media screen and (max-width: 749px) {
+	#TextColumnImage-1555380520691 {
+		max-width: 300px;
+		max-height: 750px;
+	}
+	#TextColumnImageWrapper-1555380520691 {
+		max-width: 300px;
+	}
+}
+@media screen and (min-width: 750px) { 
+	#TextColumnImage-1555380522935 {
+		max-width: 300px;
+		max-height: 300px;
+	}
+	#TextColumnImageWrapper-1555380522935 {
+		max-width: 300px;
+		max-height: 300px;
+	}
+} 
+@media screen and (max-width: 749px) {
+	#TextColumnImage-1555380522935 {
+		max-width: 300px;
+		max-height: 750px;
+	}
+	#TextColumnImageWrapper-1555380522935 {
+		max-width: 300px;
+	}
+}
+#shopify-section-badges-product_new_section{
+
+	background: #fff;
+	padding: 25px 0;
+
+}
+.slick-slider .slick-dots{
+	width: 100%;
+}
+.page-width_slider {
+    max-width: 100%;
+    margin: 0 auto;
+	padding-left: 0;
+    padding-right: 0;
+}
+<!----Crousal css------>
+.wrapper{
+  width:100!important%;
+  padding-top: 20px;
+  text-align:center;
+}
+.carousel_slick {
+    width: 90%;
+    margin: 0px auto;
+    background: #f5f5f5;
+    padding: 15px 15px;
+}
+.slick-slide{
+  margin:10px;
+}
+.slick-slide img{
+  width:100%;
+  border: 2px solid #fff;
+}
+.slick_btn_cus{
+	padding:20px 20px;
+	text-align:center;
+}
+.slick_btn_cus a {
+    display: inline-block;
+    padding: 6px;
+    width: 100px;
+    background: transparent;
+    color: #6c2391;
+    border: 1px solid #6c2391;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
+.slick_btn_cus a:hover{
+	opacity:0.6;
+	color:#6c2391;
+}
+.slick-slide{
+	background:white;
+	text-align:center;
+}
+.slick-dots li.slick-active button:before {
+    color: #6c2391;
+}
+.slick-slider .slick-dots li button::before
+{
+color: #6c2391;
+}
+span.review {
+    font-weight: 600;
+    color: #6c2391;
+    font-size: 27px;
+}
+h1.review_head {
+    font-size: 27px;
+}
+.video_section {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 0 -28px;
+}
+.video_item {
+    width: 33.3333%;
+    padding: 0 28px;
+    margin-bottom: 50px;
+	position:relative;
+}
+.video_image img {
+    display: block;
+    position: relative;
+    margin-bottom: 20px;
+}
+.vedio_head h4 {
+    font-weight: 600;
+    font-size: 15px;
+}
+.vedio_head p {
+    font-size: 12px;
+}
+.page-width_video
+{
+    max-width: 900px !important;
+    margin: 0 auto;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-family: "slick" !important;
+    font-size: 20px;
+    line-height: 1;
+    color: black;
+    opacity: 0.75;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-dotted.slick-slider .slick-prev:before {
+    background: url(https://cdn.shopify.com/s/files/1/2395/3423/files/left-arrow_3.png?v=16177146751);
+    width: 50px !important;
+    content: '';
+    color: #6c2391;
+    opacity: 1;
+    height: 47px!important;
+    z-index: 9999999999999;
+    background-size: 25px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: -5px;
+	top: 0;
+}
+.slick-dotted.slick-slider .slick-next:before {
+	background: url(https://cdn.shopify.com/s/files/1/2395/3423/files/left-arrow_4.png?v=1617714675);
+    width: 50px !important;
+    content: '';
+    color: #6c2391;
+    opacity: 1;
+    height: 47px!important;
+    z-index: 9999999999999;
+    background-size: 25px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0px;
+	top: 0;
+}
+.slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
+    outline: none;
+}
+.slick_btn_cus a:hover {
+    opacity: 1;
+    color: #fff;
+    background: #6c2391;
+}
+.foursixty-section .title{
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
+	font-size:27px;	
+	margin-bottom:40px;
+}
+.c__title{
+	font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-weight: 400!important;
+    line-height: 1.2;
+	font-size:27px;	
+	margin-bottom:40px;
+}
+.c_image_with_text{
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	flex-wrap:wrap;
+	margin-top:40px;
+}
+.c_image_with_text .c_box{
+	width:49%;
+	
+}
+.c_box .metal_box{
+	text-align:center;
+}
+.c_box .metal_box .metal-box-img img {
+    width: 100%;
+}
+
+
+.c_box .metal_box .metal-dec h2 {
+    font-size: 20px;
+    color: #000;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: unset;
+    margin: 40px auto 35px;
+}
+.c_box .metal_box .metal-dec p{
+	    margin: 20px 30px;
+}
+.c_box .metal_box .metal-dec .textc a{
+	margin-bottom: 50px;
+    min-width: 230px;
+    height: 55px;
+    font-weight: 600;
+	background:
+}
+.google_advert_banner{
+	padding:200px 0px;
+	background:url("https://cdn.shopify.com/s/files/1/2395/3423/files/nose-ring-group-5_2-web.jpg?v=1587749650")no-repeat center center;
+	background-size:cover;
+	
+}
+.google_banner_text h1{
+	font-weight:bold;
+	color:#242424;
+	font-size:50px;	
+}
+.google_banner_text p {
+    max-width: 520px;
+    color:#242424;
+	padding: 20px 0px;
+}
+.earings .video_image {
+    background-position: center center;
+    height: 300px;
+    width: 100%;
+	background-repeat: no-repeat;
+}
+.video_image h3 {
+    color: #fff;
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	text-align:center;
+}
+.hero__btn{
+	border: 1px solid #6C2391!important;
+	color: #6C2391!important;
+	padding: 8px 15px!important;
+}
+main#MainContent {
+    padding: 0!important;
+}
+div#shopify-section-page-details-google-template {
+    padding: 0!important;
+}
+.foursixty-section_custom h3 {
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
+    font-size: 27px;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+</style>
+<!--1-->
+{% section 'page-details-google-template' %}
+<!--2-->
+{% section 'text-only-section-google-advert2' %}
+<!--3-->
+{% section 'collection-section-google-advert' %}
+<!--4-->
+{% section 'instagram_google_advert_section' %}
+<!--5-->
+{% section 'instagram_google_advert_section2' %}
+<!--6-->
+{% section 'text-only-section-google-advert' %}
+ <div id="shopify-section-badges-product" class="shopify-section">
+   <div class="badges-image">
+      <div class="page-width">
+         <div class="grid grid--uniform grid--flush-bottom">
+            <div class="grid__item medium-up--one-quarter text-center"> 
+               <div id="TextColumnImageWrapper-1555380513886" class="feature-row__image-wrapper js">
+                  <div>
+                     <img id="TextColumnImage-1555380513886" class="feature-row__image lazyloaded" data-src="//cdn.shopify.com/s/files/1/2395/3423/files/smiling-heart-emoticon-grayscale_300x300_purple.png" alt="Body Jewelry Return Policy" src="//cdn.shopify.com/s/files/1/2395/3423/files/smiling-heart-emoticon-grayscale_300x300_purple.png">
+                  </div>
+               </div>
+               <noscript>
+                  <p>
+                     <img src="//cdn.shopify.com/s/files/1/2395/3423/files/smiling-heart-emoticon-grayscale_300x300_purple.png" alt="Body Jewelry Return Policy" class="feature-row__image" />
+                  </p>
+               </noscript>
+			   <h3 class="h4">Happiness Guaranteed</h3>
+               <div class="rte-setting">
+                  <p>Ordered the wrong size? No problem. We'll work with you to get it right.</p>
+               </div>
+            </div>
+            <div class="grid__item medium-up--one-quarter text-center">
+               <div id="TextColumnImageWrapper-1555380518083" class="feature-row__image-wrapper js">
+                  <div>
+                     <img id="TextColumnImage-1555380518083" class="feature-row__image lazyloaded" data-src="//cdn.shopify.com/s/files/1/2395/3423/files/diamond-icon_300x300_purple.png" alt="Piercing Jewelry Materials" src="//cdn.shopify.com/s/files/1/2395/3423/files/diamond-icon_300x300_purple.png">
+                  </div>
+               </div>
+               <noscript>
+                  <p>
+                     <img src="//cdn.shopify.com/s/files/1/2395/3423/files/diamond-icon_300x300_purple.png" alt="Piercing Jewelry Materials" class="feature-row__image" />
+                  </p>
+               </noscript>
+			   <h3 class="h4">Only The Best</h3>
+               <div class="rte-setting">
+                  <p>Handmade in the USA from the finest quality materials.</p>
+               </div>
+            </div>
+            <div class="grid__item medium-up--one-quarter text-center">
+               <div id="TextColumnImageWrapper-1555380520691" class="feature-row__image-wrapper js">
+                  <div>
+                     <a href="/pages/shipping">
+                     <img id="TextColumnImage-1555380520691" class="feature-row__image lazyloaded" data-src="//cdn.shopify.com/s/files/1/2395/3423/files/delivery_truck_934065_300x300_1_300x300_purple.png" alt="" src="//cdn.shopify.com/s/files/1/2395/3423/files/delivery_truck_934065_300x300_1_300x300_purple.png">
+                     </a>
+                  </div>
+               </div>
+               <noscript>
+                  <p>
+                     <img src="//cdn.shopify.com/s/files/1/2395/3423/files/delivery_truck_934065_300x300_1_300x300_purple.png" alt="" class="feature-row__image" />
+                  </p>
+               </noscript>
+			   <h3 class="h4">Free Shipping</h3>
+               <div class="rte-setting">
+                  <p>Free shipping everyday,<br>within the US.</p>
+               </div>
+            </div>
+            <div class="grid__item medium-up--one-quarter text-center">
+               <div id="TextColumnImageWrapper-1555380522935" class="feature-row__image-wrapper js">
+                  <div>
+                     <a href="/pages/buy-now-pay-later-with-affirm">
+                     <img id="TextColumnImage-1555380522935" class="feature-row__image lazyloaded" data-src="//cdn.shopify.com/s/files/1/2395/3423/files/affirm-logo_300x300_1_300x300_purple.png" alt="" src="//cdn.shopify.com/s/files/1/2395/3423/files/affirm-logo_300x300_1_300x300_purple.png">
+                     </a>
+                  </div>
+               </div>
+               <noscript>
+                  <p>
+                     <img src="//cdn.shopify.com/s/files/1/2395/3423/files/affirm-logo_300x300_1_300x300_purple.png" alt="" class="feature-row__image" />
+                  </p>
+               </noscript>
+			    <h3 class="h4">Buy Now, Pay Later</h3>
+               <div class="rte-setting">
+                  <p>Pay over time with<br>monthly payments.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="foursixty-section_custom"><h3>As styled on instagram</h3><script src="//foursixty.com/media/scripts/fs.slider.v2.5.js" data-feed-id="freshtrends-fine-body-jewelry" data-theme="slider_v2_5" data-open-links-in-same-page="true" data-category-filter="Diamond-Nose-Ring" data-cell-size="25%"></script></div>
+<style>.fs-has-links::after { padding:5px 7.5px;background-color:#ffffff;color:rgba(0, 0, 0, 0.8);content:"SHOP IT"; } .fs-wrapper { height:auto; } .fs-entry-container { height:0 !important;width:25%!important;padding-top:25%!important; } .fs-wrapper div.fs-text-container .fs-entry-title, div.fs-detail-title { font-family:Times New Roman, serif;font-style:normal;font-weight:normal;font-size:14px; } div.fs-text-container .fs-entry-date, div.fs-detail-container .fs-post-info, div.fs-wrapper div.fs-has-links::after, .fs-text-product, .fs-overlink-text { font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:14px; } .fs-wrapper div.fs-text-container * { color:#ffffff; } .fs-wrapper div.fs-text-container { background-color:rgba(0, 0, 0, 0.8);margin:0px; } div.fs-entry-date { display:none; } div.fs-entry-title { display:none; } .fs-wrapper div.fs-timeline-entry { margin:1px; } </style>
+<div id="shopify-section-badges-product_new_section" class="shopify-section" style="margin-top:55px">
+<!--7-->
+{% section 'google-advert-review-section' %}
+	<!--<a href="https://www.freshtrends.com/pages/reviews"><button class="btn_morereviews">
+	VIEW MORE REVIEWS
+	</button></a>-->			
+</div>
+
+{%comment%}
+{% section 'feature-coulmn-google-advert' %}
+{%endcomment%}

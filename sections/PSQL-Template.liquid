@@ -1,0 +1,452 @@
+<div class="product-template__container page-width" itemscope itemtype="http://schema.org/Product" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+  <meta itemprop="name" content="{{ product.title | strip_html | escape | remove: '&quot;'}}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
+
+  {% comment %}
+    Get first variant, or deep linked one
+  {% endcomment %}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign product_image_zoom_size = '1024x1024' -%}
+  {%- assign product_image_scale = '2' -%}
+  {%- assign enable_zoom = section.settings.enable_zoom -%}
+
+  {% case section.settings.image_size %}
+    {% when 'small' %}
+      {%- assign product_image_width = 'medium-up--one-third' -%}
+      {%- assign product_description_width = 'medium-up--two-thirds' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-third' -%}
+      {%- assign height = 345 -%}
+    {% when 'medium' %}
+      {%- assign product_image_width = 'medium-up--one-half' -%}
+      {%- assign product_description_width = 'medium-up--one-half' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-quarter' -%}
+      {%- assign height = 530 -%}
+    {% when 'large' %}
+      {%- assign product_image_width = 'medium-up--two-thirds' -%}
+      {%- assign product_description_width = 'medium-up--one-third' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-fifth' -%}
+      {%- assign height = 720 -%}
+    {% when 'full' %}
+      {%- assign product_image_width = '' -%}
+      {%- assign product_description_width = '' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-eighth' -%}
+      {%- assign height = 1090 -%}
+      {%- assign enable_zoom = false -%}
+  {% endcase %}
+
+  <div class="grid product-single">
+    <div class="grid__item product-single__photos {{ product_image_width }}{% if section.settings.image_size == 'full' %} product-single__photos--full{% endif %}">
+      {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+      {% for image in product.images %}
+        {% capture img_id %}FeaturedImage-{{ section.id }}-{{ image.id }}{% endcapture %}
+        {% capture img_class %}product-featured-img{% endcapture %}
+        {% capture zoom_img_id %}FeaturedImageZoom-{{ section.id }}-{{ image.id }}{% endcapture %}
+        {% capture img_wrapper_id %}{{ zoom_img_id }}-wrapper{% endcapture %}
+        {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+        {% include 'image-style' with small_style: true, width: height, height: height, wrapper_id: img_wrapper_id, img_id: img_id %}
+
+        <div id="{{ img_wrapper_id }}" class="product-single__photo-wrapper js">
+          <div id="{{ zoom_img_id }}" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%;" class="product-single__photo{% if enable_zoom %} js-zoom-enabled{% endif %}{% if product.images.size > 1 %} product-single__photo--has-thumbnails{% endif %}{% unless featured_image == image %} hide{% endunless %}" data-image-id="{{ image.id }}"{% if enable_zoom %} data-zoom="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+            <img id="{{ img_id }}"
+                 class="feature-row__image {{ img_class }} lazyload{% unless featured_image == image %} lazypreload{% endunless %}"
+                 src="{{ image | img_url: '300x300' }}"
+                 data-src="{{ img_url }}"
+                 data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                 data-aspectratio="{{ image.aspect_ratio }}"
+                 data-sizes="auto"
+                 alt="{{ image.alt | escape }}">
+          </div>
+        </div>
+      {% endfor %}
+
+      <noscript>
+        {% capture product_image_size %}{{ height }}x{% endcapture %}
+        <img src="{{ featured_image | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_image.alt }}" id="FeaturedImage-{{ section.id }}" class="product-featured-img" style="max-width: {{ height }}px;">
+      </noscript>
+
+      {% if product.images.size > 1 %}
+        {% if product.images.size > 3 %}
+          {%- assign enable_thumbnail_slides = true -%}
+        {% endif %}
+
+        <div class="thumbnails-wrapper{% if enable_thumbnail_slides == true %} thumbnails-slider--active{% endif %}">
+          {% if enable_thumbnail_slides == true %}
+            <button type="button" class="btn btn--link thumbnails-slider__btn thumbnails-slider__prev thumbnails-slider__prev--{{ section.id }}">
+              {% include 'icon-chevron-left' %}
+              <span class="icon__fallback-text">{{ 'sections.slideshow.previous_slide' | t }}</span>
+            </button>
+          {% endif %}
+          <ul class="grid grid--uniform product-single__thumbnails product-single__thumbnails-{{ section.id }}">
+            {% for image in product.images %}
+              <li class="grid__item product-single__thumbnails-item js">
+                <a href="{{ image.src | img_url: product_image_zoom_size, scale: product_image_scale }}"
+                   class="text-link product-single__thumbnail product-single__thumbnail--{{ section.id }}"
+                   data-thumbnail-id="{{ image.id }}"
+                   {% if enable_zoom %}data-zoom="{{ image.src | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+                     <img class="product-single__thumbnail-image" src="{{ image.src | img_url: '110x110', scale: 2 }}" alt="{{ image.alt | escape }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          {% if enable_thumbnail_slides == true %}
+            <button type="button" class="btn btn--link thumbnails-slider__btn thumbnails-slider__next thumbnails-slider__next--{{ section.id }}">
+              {% include 'icon-chevron-right' %}
+              <span class="icon__fallback-text">{{ 'sections.slideshow.next_slide' | t }}</span>
+            </button>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="grid__item {{ product_description_width }}">
+      <div class="product-single__meta">
+
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+         
+          <!-- @Malibu Code Block -->
+          <div id="product-variant-price"></div>
+          <br>
+          <div id="product-variant-options"></div>
+          <br>
+          <div id="variantimages"></div>
+          <br>
+          <button id="add_variant_to_cart">Add To Cart!</button>
+          
+          
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+          <script>
+            var productIDS = 0;
+            //Sample ProductVariant.Id = 21324451741776
+            //https://www.freshtrends.com/products/4-bead-14k-gold-labret-lip-ring-tragus-cartilage-stud
+            
+            var currentMasterProductVariantId = {{ product.variants.first.id }}; //isn't propagating
+            //var currentMasterProductVariantId = {{product.id}};                  //isn't propagating 
+            
+            //var currentMasterProductVariantId = 21324451741776;  //need to speak with Paul on this
+            
+	        var optionsUrl = 'https://www.parasql.com/api?apiKey=56f8889f0b779cb0dfe2885c678c36ef229314badc11572d9eb32371ea34fe5f&action=executeQuery&query=CALL+MasterProductVariant_GetOptions('+currentMasterProductVariantId+')';
+            var globalVariantId = 0;  
+            var dropDowns = [];
+            
+            function updateCartAttributes(variantID, callback) {
+                //var productID = data.stringChoice.id;
+                //var currentCartNote = "{{cart.note}}";
+                //productID = parseInt(data);
+                //alert(productID);
+                //updates uses a numerical literal in the setup so create the json this way 
+                //let json = { updates:{ [productID]:1 },note: '[Product: '+data.parentProduct+'/'+data.stringSelected+ ' Mains: '+ data.mains+' Crosses: '+data.crosses+'] ... '+ currentCartNote  };
+                let json = { updates:{ [variantID]:1 } };
+                var params = {
+                type: 'POST',
+                url: '/cart/update.js',
+                data: json,
+                dataType: 'json',
+                success: function(cart) {
+                if ((typeof callback) === 'function') {
+                $('.cart-count').html(cart.item_count);
+                callback(cart);
+                }
+                else {
+                Shopify.api.onCartUpdate(cart);
+                }
+                },
+                error: function(XMLHttpRequest, textStatus) {
+                Shopify.api.onError(XMLHttpRequest, textStatus);
+                }
+                };
+                
+                $.ajax(params);
+                
+                //Delayed AJAX submission until add to cart main parent product added
+                event.preventDefault();
+      
+                setTimeout(function(){
+                   window.location.href = '/cart'  //redirect to cart page after button click
+                },1000);  
+  
+              };    
+            
+            
+            
+            
+            function getVariantInfoUpdate(variantID_in){
+            //Function to update the display when new variant is provided  
+            var variantJSON = $.ajax({
+                  //so we will need parent handle as well as variantid
+                  url: "/products/4-bead-14k-gold-labret-lip-ring-tragus-cartilage-stud?variant="+variantID_in+"",
+                  type: "GET",
+                  dataType: "json",
+                  success: function(data) {
+                      
+                    rows = data.product.images;  //image array
+                    price = data.product.variants;
+                    productIDS = data.product.variants; //set array of products
+                    //rows = data.product.image.src;   //appear to be set with parent image only
+                    //console.log(price[0].price);
+                   
+                    $('#product-variant-price').html("");
+                    $('#product-variant-price').append(document.createTextNode("Price: $"+price[0].price));
+                    
+                    $('#variantimages').html(""); //clear out to avoid doubling
+                    
+                    for (var property in rows){
+                     console.log(rows[property].src); 
+                     //just display the parent images
+                     //
+                     $('#variantimages').append($('<img>', { 
+                            src : rows[property].src, 
+                            width : 50, 
+                            height : 50, 
+                            alt : "Test Image", 
+                            title : "Test Image"
+                     }));
+                      
+                    }
+                    }
+                    });
+              return;  
+              }; //endfunction  
+            
+            function userMadeSelection(event){
+                     var opts = [];
+		             for (var i = 0; i < dropDowns.length; i++) {
+		
+			         var selElement = dropDowns[i];
+			         var ddName = selElement.getAttribute('data-drop-down-name');
+			         var ddValue = selElement.value;
+			          opts.push({Name:ddName, Value:ddValue});
+		             }
+                     //console.log(opts);
+                     var sp_call = "CALL ProductVariant_GetFromOptions("+currentMasterProductVariantId+", '"+JSON.stringify(opts).replace(/\\/g, "\\\\")+"')";
+		             var getOnChangeUrl = 'https://www.parasql.com/api?apiKey=56f8889f0b779cb0dfe2885c678c36ef229314badc11572d9eb32371ea34fe5f&action=executeQuery&query='+encodeURIComponent(sp_call);
+                     //console.log(getOnChangeUrl);
+                     //using choice formulated string submit back to paraSQL to get variant ID
+                     $.getJSON(getOnChangeUrl,function(data){
+                           var rows = data.data.rows;
+                           if (rows[0]) {
+						      //console.log('matching product variant ID is '+rows[0].values[0].value);
+                              globalVariantId = rows[0].values[0].value;
+                              //console.log(globalVariantId);
+                              getVariantInfoUpdate(globalVariantId);
+					       } else {
+						      //console.log('no product matches that combination of options');
+					       } 
+                     });
+                     
+            };//endfunction
+            
+            // Get Data and Drawout Options //
+            $.getJSON(optionsUrl, function(data) {
+                var rows = data.data.rows;
+                var currentDropDownName = "";
+                var nl_flag = 0;
+                
+                console.log(rows);
+              
+                //first label instance
+                var labelme = rows[0].values[0].value;
+                document.getElementById('product-variant-options').append(document.createTextNode(labelme+' '));  
+                              
+                for (var i = 0; i < rows.length; i++) {
+				      
+                  //Isolate out Variant Labels
+                  if (labelme == rows[i].values[0].value){
+                  }else{
+                  labelme = rows[i].values[0].value;
+                  document.getElementById('product-variant-options').append(document.createTextNode(labelme+' '));
+                  nl_flag = 0;  
+                  };
+                  
+                  //Propagate the Options Values                     
+                    
+					if (rows[i].values[0].value != currentDropDownName) {
+						currentDropDownName = rows[i].values[0].value;
+						
+						var selectElement = document.createElement('select');
+						selectElement.setAttribute('data-drop-down-name', currentDropDownName);
+						document.getElementById('product-variant-options').append(selectElement);
+						dropDowns.push(selectElement); // so we can easily reference later
+						selectElement.addEventListener('change', userMadeSelection);
+					}
+					
+					var opt = document.createElement('option');
+					opt.value = rows[i].values[1].value;
+					opt.text = rows[i].values[1].value;
+					selectElement.add(opt);
+                    
+                  if (nl_flag == 0){
+                    document.getElementById('product-variant-options').append(document.createElement('br'));
+                    nl_flag =1;
+                  }else{
+                  }  
+                    
+				}
+            });//endfunction
+    
+    
+           </script>
+
+
+          
+          
+          
+          
+          
+          
+          <!-- -- -->
+
+        </div>
+        <div class="product-single__description rte" itemprop="description">
+          <p class="desc-sku">Description{% if product.metafields.text.SKU %}<span>{{ product.metafields.text.SKU }}</span>{% endif %}</p>
+          {{ product.description }}
+        </div>
+        
+
+        {% if section.settings.show_share_buttons %}
+          {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+        {% endif %}
+        
+        <div class="product-tab">
+          <ul>
+            <li class="active"><a href="#" data-tab="content-tab1">Product Details</a></li>
+            <li><a href="#" data-tab="content-tab2">Reviews</a></li>
+            <li><a href="#" data-tab="content-tab3">Size Chart</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="ctab content-tab1 active js-detail-variant" itemprop="description">
+              {% include 'product-detail-variants' %}
+              {% comment %}
+              {% include 'metafields-details' %}
+              {% endcomment %}
+            </div>
+            <div class="ctab content-tab2">
+              <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+            </div>
+            <div class="ctab content-tab3">
+              {{ pages['size-chart'].content }}
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if collection %}
+  <div class="text-center return-link-wrapper">
+    <a href="{{ collection.url }}" class="btn btn--secondary btn--has-icon-before return-link">
+      {% include 'icon-arrow-left' %}
+      {{ 'products.product.back_to_collection' | t: title: collection.title }}
+    </a>
+  </div>
+{% endif %}
+
+{% unless product == empty %}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+  </script>
+{% endunless %}
+
+<style type="text/css">
+  .star-review .spr-icon-star-empty, .star-review .spr-icon-star {color: {{ section.settings.need_different_size_color }};}
+</style>
+
+<script>
+  //first run
+  getVariantInfoUpdate(currentMasterProductVariantId);
+  //Eventlistener for Add to Cart Button
+  $('#add_variant_to_cart').click(function(){
+    updateCartAttributes(globalVariantId);
+  });
+</script>  
+
+
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "full",
+            "label": "Full-width"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quantity_selector",
+        "label": "Show quantity selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_labels",
+        "label": "Show variant labels",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_zoom",
+        "label": "Enable image zoom",
+        "default": true
+      },
+      {
+		"type": "text",
+		"id": "need_different_size_title",
+		"label": "Need different size title"
+	  },
+      {
+		"type": "color",
+		"id": "need_different_size_color",
+		"label": "Need different size color"
+	  },
+      {
+		"type": "text",
+		"id": "need_different_size_link",
+		"label": "Need different size link"
+	  },
+      {
+		"type": "text",
+		"id": "special_instructions_title",
+		"label": "Special instructions title"
+	  },
+      {
+		"type": "textarea",
+		"id": "special_instructions_info",
+		"label": "Special instructions info"
+	  },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

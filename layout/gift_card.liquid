@@ -1,0 +1,74 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+
+  <script src="https://cdn.yottaa.com/rapid.min.js?key=pN_qV_vpkwrqBg"></script>
+  <script>
+    Yo.configure('https://qoe-1.yottaa.net/api/v1/configure.rapid.js?key=pN_qV_vpkwrqBg');
+  </script>
+
+
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {% endif %}
+
+  {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+  {%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+  <title>{{ 'gift_cards.issued.title_html' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+
+  <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+
+  {% include 'google-fonts' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'gift-card.scss.css' | asset_url | stylesheet_tag }}
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}"></script><![endif]-->
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'gift-card.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'gift-card.js' | asset_url }}"></script><![endif]-->
+
+  {{ content_for_header }}
+
+<!-- GSSTART Show variants. Do not change -->
+{% if request.path contains "/products/" %}{% else %}{% endif %}
+<!-- Show variants code end. Do not change GSEND --></head>
+
+<body class="template-giftcard">
+  {{ content_for_layout }}
+
+<!-- GSSTART Show variants BODY. Do not change -->{% if collection.products %}
+<div style="display: none !important;">
+  {% paginate collection.products by 50 %}{% for product in collection.products %}{% assign imagescount = product.images | size %}{% if imagescount > 1 %}
+  <div style="display: none !important;" class="gsProductVariants" gsProductHandler="{{ product.handle }}" >{% assign variantImgsUsedStr = "" %} {% assign variantBySizeUsedStr = "" %}{% assign sizeoptionnr = 0 %}
+{% for option in product.options %}{% capture optioncaseins %}{{option | downcase}}{% endcapture %}{% if optioncaseins contains "size" or optioncaseins contains "rösse" or optioncaseins contains "المقاس" or optioncaseins contains "oko" or optioncaseins contains "eden" or optioncaseins contains "größe" or optioncaseins contains "ozmiar" or optioncaseins contains "torlek" or optioncaseins contains "aille" or optioncaseins contains "alla" or optioncaseins contains "amaño" or optioncaseins contains "גודל" or optioncaseins contains "サイズ" or optioncaseins contains "taille" or optioncaseins contains "eggiseno" or optioncaseins contains "aat" or optioncaseins contains "tamanho" or optioncaseins contains "rrelse" or optioncaseins contains "siza" %}{% assign sizeoptionnr = forloop.index %}{% if product.options.size == 1 %}{% endif %}{% if optioncaseins contains "color" or optioncaseins contains "colour" or optioncaseins contains "farge"  %}{% assign sizeoptionnr = 0 %}{% endif %}{% endif %}{% endfor %}
+    {% for variant in product.variants %}{% assign featuredImageSize = variant.featured_image | size %}{% if featuredImageSize > 0  %}{% if variantImgsUsedStr contains "IGNOREGS" %}{% else %}{% assign variantImgsUsedStr = variantImgsUsedStr | append: variant.featured_image %}{% assign canAddVariant = true %}{% if sizeoptionnr == 1 %}{% assign optionCheckVal = ";" | append: variant.option2 | append: variant.option3 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}{% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option2 | append: variant.option3 | append: ";" %}{% endif %}{% endif %}
+    {% if sizeoptionnr == 2 %}{% assign optionCheckVal = ";" | append: variant.option1 | append: variant.option3 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}
+                {% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option1 | append: variant.option3 | append: ";" %}{% endif %}{% endif %} {% if sizeoptionnr == 3 %}{% assign optionCheckVal = ";" | append: variant.option1 | append: variant.option2 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}
+                {% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option1 | append: variant.option2 | append: ";" %}{% endif %}{% endif %} {% if canAddVariant == true %}
+    <p vcontinue="{{ variant.inventory_policy }}" vquantity="{{ variant.inventory_quantity }}" vavailable="{{ variant.available }}" variantpriceid="{{ variant.id }}" originalcompprice='{{ product.compare_at_price_min | money_without_trailing_zeros | escape }}' originalprice='{{ product.price | money_without_trailing_zeros | escape }}' minprice='{{ product.price_min | money_without_trailing_zeros | escape }}' comparePrice='{{ variant.compare_at_price | money_without_trailing_zeros | escape }}' variantPrice='{{ variant.price | money_without_trailing_zeros | escape }}'></p>
+    <p varianttitleid="{{ variant.id }}" sizeoptionnr="{{ sizeoptionnr }}" optionuidtwo="{{ product.id }}{{ variant.option2 | escape }}" optiontwo="{{ variant.option2 | escape }}" originaltitle="{{ product.title | escape }}" variantTitle="{{ variant.title | escape }}" optionuid="{{ product.id }}{{ variant.option1 | escape }}"></p>
+       <span variantid="{{ variant.id }}" imgwidth="{{ variant.featured_image.width }}" imgheight="{{ variant.featured_image.height }}" gsvariantimage="{{ variant.featured_image | img_url: '256x' }}"></span>
+    {% endif %}{% endif %}{% endif %}{% endfor %}
+  </div>{% endif %}{% endfor %}{% endpaginate %}{% endif %}
+  {% if collection.products %}
+        <div style="display: none !important;" class="gsProductImages" >
+        {% paginate collection.products by 50 %}{% for product in collection.products %} {% assign imagescount = product.images | size %}{% if imagescount > 1 %}{% for image in product.images  limit:1 %}
+                                        <span gsProductHandle="{{ product.handle }}" firstImage="{{ image | img_url: '256x' }}"></span>
+                                {% endfor %}{% endif %}{% endfor %}{% endpaginate %}
+  </div>
+  </div>
+    {% endif %} <!-- Show variants code end BODY. Do not change GSEND --></body>
+</html>

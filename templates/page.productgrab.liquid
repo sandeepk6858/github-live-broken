@@ -1,0 +1,30 @@
+{%layout none %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="contentstuff"></div>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  $.getJSON( "/products/050ct-si1-g-diamond-prong-set-14k-gold-cartilage-stud-earring.json", function( data ) {
+  console.log(data);
+    
+  var image1 = data.product.images[0].src
+  console.log(image1);
+    
+  var el = $('.contentstuff')
+      .append($('<img></img>')
+      .attr({ src : image1 }));        
+ 
+  });
+  
+</script>  

@@ -1,0 +1,272 @@
+<style>
+/* Position the image container (needed to position the left and right arrows) */
+.container {
+  width:100%;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  display:flex;
+  justify-content:space-between;
+  z-index:9999;
+  padding:0px 20px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.prev,.next{
+	width:50px;
+	height:50px;
+	background-color:#fff;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	border-radius:50%;
+	opacity:0;
+	visibility:hidden;
+	cursor:pointer;
+	box-shadow: 0 0 20px #00000033;
+}
+
+.product-single__photo-wrapper:hover .prev{
+	opacity:0.6;
+	visibility:visible;
+}
+.product-single__photo-wrapper:hover .next{
+	opacity:0.6;
+	visibility:visible;
+}
+
+
+.product-video:hover .prev{
+	opacity:0.6;
+	visibility:visible;
+}
+.product-video:hover .next{
+	opacity:0.6;
+	visibility:visible;
+}
+.full-width-img{
+	
+	height:50%;
+}
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  
+  .prev,.next{
+	display:none;
+  }
+  
+}
+.active_thumbnail{
+	border: 2px solid transparent!important;
+	color:#000!important;
+}
+
+img.product-single__thumbnail-image.stop_vid.demo.active_thumbnail{
+	border: 2px solid transparent!important;
+	color:#000!important;
+}
+.active_thumbnail,
+.demo:hover {
+	opacity: 1;
+}
+.custom-expand-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    display: flex;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    box-shadow: 0 0 20px #00000036;
+}
+.custom-expand-btn img{
+	width:25px;
+	height:25px;
+}
+.custom-expand-btn:hover{
+	opacity:0.5;
+}
+
+<!-- .product-featured-img:hover + .span.ps_arrow,span.nt_arrow{
+    opacity: 1;
+} -->
+
+</style>
+{% case media.media_type %}
+  {% when 'image' %}
+   
+  {% assign i = 0 %}
+  
+  {% for image in product.images %}
+	
+	{% if i == count %}
+		{%- assign image_id = image.id  -%}
+		{% assign count = count | plus: 1 %}
+		{% break %}
+	{% else %}
+		{% assign i = i | plus: 1 %}
+	{% endif %}
+  {% endfor %}
+        {% capture img_id %}FeaturedImage-{{ section.id }}-{{ image_id }}{% endcapture %}
+        {% capture img_class %}product-featured-img{% endcapture %}
+        {% capture zoom_img_id %}FeaturedImageZoom-{{ section.id }}-{{ media.id }}{% endcapture %}
+        {% capture img_wrapper_id %}{{ zoom_img_id }}-wrapper{% endcapture %}
+        {%- assign img_url = media.src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+		
+        {% include 'image-style' with small_style: true, width: height, height: height, wrapper_id: img_wrapper_id, img_id: img_id %}
+		
+        <div id="{{ img_wrapper_id }}" class="product-single__photo-wrapper js new">
+          <div id="{{ zoom_img_id }}" style="padding-top:{{ 1 | divided_by: media.aspect_ratio | times: 100}}%;" class="product-single__photo{% if enable_zoom %} js-zoom-enabled{% endif %}{% if product.images.size > 1 %} product-single__photo--has-thumbnails{% endif %}{% unless featured_image == media %} hide{% endunless %} mySlides" data-image-id="{{ image_id }}"{% if enable_zoom %} data-zoom="{{ media.src | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+            <img id="{{ img_id }}"
+                 class="feature-row__image {{ img_class }} lazyload{% unless featured_image == media %} lazypreload{% endunless %}"
+                 src="{{ media.src | img_url: '720x720' }}"
+                 data-src="{{ media.src | img_url: '720x720' }}"
+                 data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                 data-aspectratio="{{ media.aspect_ratio }}"
+                 data-sizes="auto"
+                 alt="{{ media.alt | escape }}">
+			
+			<div class="container">
+				<a class="prev" onclick="plusSlides1(-1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-2.png?v=1613626945">
+				</a>
+				<a class="next" onclick="plusSlides(1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-1.png?v=1613626945"></a>
+			</div>
+				 
+          </div>
+		  
+        </div>
+  {% when 'external_video' %}
+	
+	
+	<div style="padding-top:0;" class="product-video product-single__photo{% unless featured_image == media %} hide{% endunless %} mySlides" data-image-id="{{ media.id }}">
+		<div class="product-single__media video_d" data-media-id="{{ media.id }}">
+		  {{ media | external_video_tag }}
+		</div>
+		<div class="container">
+				<a class="prev" onclick="plusSlides1(-1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-2.png?v=1613626945">
+				</a>
+				<a class="next" onclick="plusSlides(1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-1.png?v=1613626945"></a>
+			</div>		 
+	  </div>
+	  
+  {% when 'video' %}
+
+	  <div style="padding-top:0;" class="product-video product-single__photo{% unless featured_image == media %} hide{% endunless %} mySlides" data-image-id="{{ media.id }}">
+		<div class="product-single__media" data-media-id="{{ media.id }}">
+		  {{ media | video_tag: controls: true }}
+		</div>
+			<div class="container">
+				<a class="prev" onclick="plusSlides1(-1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-2.png?v=1613626945">
+				</a>
+				<a class="next" onclick="plusSlides(1)">
+				<img class="full-width-img" src="https://cdn.shopify.com/s/files/1/2395/3423/files/greater-1.png?v=1613626945"></a>
+			</div>	 
+	  </div>
+	
+  {% when 'model' %}
+	<div class="product-single__media" style="padding-top: 100%" data-media-id="{{ media.id }}">
+	  {{ media | model_viewer_tag }}
+	</div>
+  {% else %}
+	<div class="product-single__media" style="padding-top: 100%;" data-media-id="{{ media.id }}">
+	  {{ media | media_tag }}
+	</div>
+{% endcase %}
+<script>
+
+	var slideIndex = 1;
+	showSlides(slideIndex);
+
+	function plusSlides(n) {
+	  showSlides(slideIndex += n);
+	}
+
+	function plusSlides1(n) {
+	  showSlides1(slideIndex += n);
+	}
+
+
+	function currentSlide(n) {
+	  showSlides(slideIndex = n);
+	}
+
+	function showSlides(n) {
+		  var i;
+		  var slides = document.getElementsByClassName("mySlides");
+		  var uid= $(slides).data('uid');
+		  if (n > slides.length) {slideIndex = 1}
+		  if (n < 1) {slideIndex = slides.length}
+		  for (i = 0; i < slides.length; i++) {
+			  slides[i].classList.add("hide");
+		  }
+		  slides[slideIndex-1].classList.remove("hide");
+		  var data_image_id = slides[slideIndex-1].getAttribute("data-image-id");
+		  
+		  (function($) {
+			$(".demo").each(function(){
+				$(this).removeClass('active-thumb');
+				if($(this).attr('data-thumbnail-id') == data_image_id){
+					$(this).addClass('active-thumb');
+					$(".thumbnails-slider__next").trigger("click");
+				}
+			});
+		})(jQuery);
+	}
+
+
+	function showSlides1(n) {
+		  var j;
+		  var slides = document.getElementsByClassName("mySlides");
+		  var uid= $(slides).data('uid');
+		  if (n > slides.length) {slideIndex = 1}
+		  if (n < 1) {slideIndex = slides.length}
+		  for (j = 0; j < slides.length; j++) {
+			  slides[j].classList.add("hide");
+		  }
+		  slides[slideIndex-1].classList.remove("hide");
+		  var data_image_id = slides[slideIndex-1].getAttribute("data-image-id");
+		  
+		  (function($) {
+			$(".demo").each(function(){
+				$(this).removeClass('active-thumb');
+				if($(this).attr('data-thumbnail-id') == data_image_id){
+					$(this).addClass('active-thumb');
+					$(".thumbnails-slider__prev").trigger("click");
+				}
+			});
+		})(jQuery);
+	}
+</script>

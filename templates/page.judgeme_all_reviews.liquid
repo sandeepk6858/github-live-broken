@@ -1,0 +1,99 @@
+<style>
+#shopify-section-badges-product_new_section .page-width_video {
+    margin: 0 auto;
+}
+#shopify-section-badges-product_new_section h1.review_head {
+    font-size: 27px;
+}
+#shopify-section-badges-product_new_section span.review {
+    font-weight: 600;
+    color: #6c2391;
+    font-size: 27px;
+}
+#shopify-section-badges-product_new_section .video_section {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 0 -28px;
+}
+#shopify-section-badges-product_new_section .video_item {
+    width: 33.3333%;
+    padding: 0 28px;
+    margin-bottom: 50px;
+}
+#shopify-section-badges-product_new_section .video_image img {
+    display: block;
+    position: relative;
+    margin-bottom: 20px;
+}
+#shopify-section-badges-product_new_section .vedio_head h4 {
+    font-weight: 600;
+    font-size: 15px;
+}
+#shopify-section-badges-product_new_section .vedio_head p {
+    font-size: 12px;
+}
+@media screen and (max-width:767px)
+{
+	#shopify-section-badges-product_new_section  .page-width_video .grid {
+		margin-left: 0 !important;
+	}
+	#shopify-section-badges-product_new_section .video_section {
+		margin: 0 !important;
+	}
+	#shopify-section-badges-product_new_section .video_item {
+		width: 100%;
+	}
+	#shopify-section-badges-product_new_section h1.review_head {
+		font-size: 22px;
+		margin-top:0px;
+	}
+	#shopify-section-badges-product_new_section span.review {
+		line-height: 50px;
+	}
+	div#shopify-section-badges-product_new_section{
+		margin-top:0px;
+	}
+}
+
+
+
+.jdgm-rev__prod-link{
+color:#6c2391!important;
+}
+.jdgm-all-reviews-page__wrapper .jdgm-branding-footer{
+	display:none;
+}
+.jdgm-all-reviews__body .jdgm-rev, .jdgm-shop-reviews__body .jdgm-rev, .jdgm-revs-tab__reviews .jdgm-rev{
+	padding-bottom:40px!important;
+}
+.jdgm-all-reviews__header{
+	text-align:center;
+}
+.jdgm-all-reviews__header> .jdgm-all-reviews__summary,.jdgm-widget-actions-wrapper,.jdgm-histogram {
+    float: none!important;
+	text-align:center!important;
+	margin:10px 0px;
+}
+.jdgm-sort-dropdown-wrapper{
+	float:left!important;
+}
+.text-center h2{
+	text-transform:none;
+}
+.jdgm-subtab .jdgm-subtab__name{
+	color: #6c2391;
+}
+.jdgm-rev__body-read-more{
+	color:#6c2391;
+}
+</style>
+
+<div id='judgeme_all_reviews_page' class="page clearfix jdgm-all-reviews-page">
+  <div class="jdgm-all-reviews-page__wrapper">
+  <!--  <h1 class="jdgm-all-reviews-page__title">{{ page.title }}</h1>-->
+    <!--div class='jdgm-all-reviews-page__description'>{{ page.content }}</div-->
+    {% section 'review-page-custom-section' %}
+    {% include 'judgeme_all_reviews' %}
+  </div>
+</div>

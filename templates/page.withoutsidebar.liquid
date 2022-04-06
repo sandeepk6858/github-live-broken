@@ -1,0 +1,91 @@
+{{ 'custom-style.css' | asset_url | stylesheet_tag }}
+<div class="page-width"><!--auto-con-->
+  <div class="main-content-con-k119">
+    <div class="right-inner-k119"><!--right-con-k119-->
+      {{ page.content }}
+
+      {% capture linklistproduct %}linklist-{{ page.handle }}{% endcapture %}
+      <div class="{% for link in linklists[linklistproduct].links %}{%- assign child_list_handle = link.title | handleize -%}{% if linklists[child_list_handle].links != blank %}{% else %}grid grid--uniform {% endif %}{% endfor %}link-collection">
+
+        {% for link in linklists[linklistproduct].links %}
+
+        {%- assign outerLoopIndex = forloop.index -%}
+        {%- assign child_list_handle = link.title | handleize -%}
+
+        {% if linklists[child_list_handle].links != blank %}
+
+        <div>
+          <h2>{{ link.title }}:</h2>
+        </div>
+
+        <div class="grid grid--uniform">
+          {% for childlink in linklists[child_list_handle].links %}
+          {% if childlink.type == 'collection_link' %}
+          {% assign collection = childlink.object %}
+          {% assign collitem = collection.handle %}
+          <div class="grid__item small--one-half medium-up--one-quarter">
+            <div class="right-inner-boxes">
+              {% if collection.image != blank %}
+              <a href="{{ childlink.url }}">
+                <img src="{{ collection.image | img_url: 'large' }}" alt="" />
+              </a>
+              {% else %}
+              {% if collection.metafields.image.page_img %}
+              <a href="{{ childlink.url }}">
+                {{ collection.metafields.image.page_img | img_tag }}
+              </a>
+              {% endif %}
+              {% endif %}
+              <br/>
+              <h4><a href="{{ childlink.url }}" title="{{ childlink.title }}">{{ childlink.title }}</a></h4>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+
+        {% else %}
+
+        {% if link.type == 'collection_link' %}
+        {% assign collection = link.object %}
+        {% assign collitem = collection.handle %}
+        <div class="grid__item small--one-half medium-up--one-quarter">
+          <div class="right-inner-boxes">
+            {% if collection.image != blank %}
+            <a href="{{ link.url }}">
+              <img src="{{ collection.image | img_url: 'large' }}" alt="" />
+            </a>
+            {% else %}
+            {% if collection.metafields.image.page_img %}
+            <a href="{{ link.url }}">
+              {{ collection.metafields.image.page_img | img_tag }}
+            </a>
+            {% endif %}
+            {% endif %}
+            <br/>
+            <h4><a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a></h4>
+          </div>
+        </div>
+
+        {% elsif link.type == 'page_link' %}
+        {% assign collection = link.object %}
+        {% assign collitem = collection.handle %}
+        <div class="grid__item small--one-half medium-up--one-quarter">
+          <div class="right-inner-boxes">
+            {% if collection.metafields.content.img %}
+            <a href="{{ link.url }}">
+              {{ collection.metafields.content.img | img_tag }}
+            </a>
+            {% endif %}
+            <br/>
+            <h4><a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a></h4>
+          </div>
+        </div>
+        {% endif %}
+
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

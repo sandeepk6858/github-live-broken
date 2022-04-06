@@ -1,0 +1,29 @@
+<form action="/search" method="get" class="search-header search" role="search">
+  <div class="search-header__field">
+      <input type="hidden" name="type" value="product">
+      <input class="search-header__input search__input" type="search" name="q"
+        placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+      <button class="search-header__submit search__submit btn--link" type="submit">
+        {% include 'icon-search' %}
+        <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+      </button>
+  </div>
+  {% if section.blocks %}
+    {% assign keywords = "" %}
+    {% assign keywordsArr = "" %}
+	{% if section.settings.enable_checkbox %}
+    <div class="search-header__keywords">look for:
+      {% for block in section.blocks %}
+        {% if block.type == "search" %}
+          {% assign keywords = keywords | append: block.settings.keyword | append: "||" %}
+        {% endif %}
+        {% assign keywordsArr = keywords | split: "||" %}
+      {% endfor %}
+      {% for keyword in keywordsArr %}
+        <a href="/search?q={{ keyword }}" class="search-header__keyword-link">{{ keyword }}</a>
+        {% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    </div>
+	{% endif %}
+  {% endif %}
+</form>

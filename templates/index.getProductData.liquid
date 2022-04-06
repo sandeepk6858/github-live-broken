@@ -1,0 +1,36 @@
+{% layout none%}
+         
+            
+            {% paginate collections.all.products by 1000 %}
+            
+                {% capture results %}
+                    
+                      
+                      {% assign ids = blank %}
+            
+                      {% assign size = blank %}
+                      {%- capture ids -%}
+                      {%- for product in collections['all'].products -%}
+                      {
+                      "id": {{-product.id |json-}},
+                      "vendor": {{-product.vendor|json-}},
+                      "title": {{-product.title|json-}},
+                      "product_type": {{-product.type|json-}}
+                      }          
+                      {% unless forloop.last %},{% endunless %}
+            
+                      {%- endfor -%}
+                      {%- endcapture -%}
+                      {%- assign ids = ids | rtrim -%}
+                      {%- assign ids = ids | ltrim -%}
+                      {%- assign size = ids | size | minus: 1 -%}
+            
+                      {{- ids | slice: 0, size -}}
+  
+            
+                {% endcapture %}
+            {% endpaginate%}
+            
+            {
+            "results": [{{ results }}]
+            }

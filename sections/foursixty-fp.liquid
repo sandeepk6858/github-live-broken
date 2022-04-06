@@ -1,0 +1,85 @@
+<section id="fs_{{section.id}}">
+  <div class="section-header text-center">
+    <h2>{{ section.settings.title }}</h2>
+    <p>{{ section.settings.title2 }}</p>
+  </div> 
+
+
+  <div>     
+    <script data-track-conversion="true"
+    data-defer-image-loading="true"
+    data-feed-id="{{section.settings.extension}}"
+            data-theme="slider_v2_5"
+            src="//foursixty.com/media/scripts/fs.slider.v2.5.js"></script>
+  </div>
+
+  <div class="section-header text-center foursixty-section" >
+    <h4><a href="{{section.settings.subtitle_url}}" class="foursixty-btn">{{section.settings.subtitle}}</a></h4>
+  </div>
+    
+<style>
+  {{ section.settings.css }}
+
+  #fs_{{section.id}} .fs-wrapper div.fs-entry-container {
+      height: 0;
+      width: {{ section.settings.desktop_cell_width }};
+      padding-top: {{ section.settings.desktop_cell_width }};   
+  }
+
+  
+  @media only screen and (max-width: 767px) {
+      #fs_{{section.id}} .fs-wrapper div.fs-entry-container {
+      width: {{ section.settings.mobile_cell_width }} !important;
+      padding-top: {{ section.settings.mobile_cell_width }} !important;
+    }
+  }
+  .foursixty-section {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+
+</style>
+</section>
+{% schema %}
+  {
+    "name": "Foursixty",
+    "settings": [
+        { "type": "text", "id": "title", "default": "Shop Our Instagram", "label": "Title" },
+        { "type": "text", "id": "title2", "default": "tag @freshtrends in your pic for a chance to be featured!", "label": "Title 2" },
+        { "type": "text", "id": "subtitle", "default": "VIEW ALL &nbsp >", "label": "Sub-Title" },
+        { "type": "url", "id": "subtitle_url", "label": "Sub-Title URL" },
+        { "type": "text", "id": "extension", "default": "_", "label": "Foursixty Extension" },
+        { "type": "select", "id": "desktop_cell_width", "label": "Pictures across (desktop)", "default": "25%", "options": [
+            {"value": "50%", "label": "two"},
+            {"value": "33.333%", "label": "three"},
+            {"value": "25%", "label": "four"},
+            {"value": "20%", "label": "five"},
+            {"value": "16.666%", "label": "six"},
+            {"value": "14.2857%", "label": "seven"}
+        ]},
+        { "type": "select", "id": "mobile_cell_width", "label": "Pictures across (mobile)", "default": "50%", "options": [
+            {"value": "100%", "label": "one"},
+            {"value": "50%", "label": "two"},
+            {"value": "33.333%", "label": "three"}
+        ]},
+        {
+            "type": "text",
+            "id": "css",
+            "label": "Customization CSS"
+        }
+        
+    ],
+    "presets": [{
+        "name": "Front Page Slider",
+        "category": "Foursixty"
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

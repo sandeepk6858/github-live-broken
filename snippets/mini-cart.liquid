@@ -1,0 +1,96 @@
+<div class="mini-cart">
+  <h3>
+    <a href="javascript:close_window();" class="close">&rarr;</a>
+    {% include 'icon-cart' %}
+    <div class="mini-cart-count-panel">{% include 'product-customizer-helper' with 'cart-item-count' %}</div>
+    <span onclick="javascript:close_window();" class="cart-heart">Happiness Guaranteed {% include 'svg-finger' %}</span>
+  </h3>
+  {% if cart.item_count > 0 %}
+  <form action="/cart" method="post"{% if cart.note != empty %} class="calc-height"{% endif %}>
+    <div class="content has-item">
+      <div class="cart-mini">
+        <div class="cart-mini-items">
+          {% for item in cart.items %}
+          <div class="cart-mini-item remove-{{ item.id }}">
+            <div class="image">
+              <a href="{{item.url}}">
+                <img src="{{ item | img_url: 'small' }}" alt="{{item.alt}}"/>
+              </a>
+            </div>
+            <div class="meta">
+              <p class="name">{{ item.product.title | truncate: 35 }}</p>
+              {% unless item.variant.title contains 'Default' %}
+                <span class="name-variation">
+                  {% for option in item.product.options %}
+                  <span>{{ option }}: {{ item.variant.options[forloop.index0] }}</span>
+                  {% endfor %}
+                  {% include 'mw_PO_cart' with item, code: 'properties' %}
+                </span>
+              {% endunless %}
+              
+              <div class="pricing">
+                {% comment %}
+                <div class="quantity">
+                  <input type="number" id="Quantity" name="quantity" value="{{ item.quantity }}" min="1" step="1" class="product-form__input" pattern="[0-9]*">
+                  <div class="quantity-nav">
+                    <div class="quantity-button quantity-up">+</div>
+                    <div class="quantity-button quantity-down off">-</div>
+                  </div>
+                </div>
+                {% endcomment %}
+
+                <div class="quantity pop-qty" id="{{ product.id }}">
+                  <input type="text" name="updates[{{item.variant.id}}]" class="qty2 update-qty change-qty-{{item.variant.id}}" id="updates_{{item.variant.id}}-{{ forloop.index }}" value="{{ item.quantity }}" data-remove="{{item.id}}" />
+                  <div class="quantity-nav">
+                    <div class="quantity-button quantity-up">
+                      <a href="javascript:modifyQuantity('#updates_{{item.variant.id}}-{{ forloop.index }}', 1, {{item.variant.id}})" data-toggle="plus" data-id="{{item.variant.id}}" class="flus for-update_{{item.variant.id}}">+</a>
+                    </div>
+                    <div class="quantity-button quantity-down">
+                      <a href="javascript:modifyQuantity('#updates_{{item.variant.id}}-{{ forloop.index }}', -1, {{item.variant.id}})" data-toggle="min" data-id="{{item.variant.id}}" class="min for-update_{{item.variant.id}}">-</a>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="price">
+                  <span class="amount">
+                    {{item.price | money }}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <p class="remove">
+              <a onclick="javascript:removeThis('#updates_{{item.variant.id}}-{{ forloop.index }}', 0)" href="javascript:void(0);" class="btn btn--small btn--secondary cart__remove">x</a>
+            </p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="cart-mini-bottom">
+      <div class="cart-mini-total">
+        <p class="line"><span class="label">Subtotal</span> <span class="value"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ cart.total_price | money }}</span></span></p>
+      </div>
+      <div class="action">
+        <a href="/checkout" class="btn">Check Out</a>
+      </div>
+      <div class="cart-mini-note{% if cart.note != empty %} active{% endif %}">
+        <div class="cart-mini-note-link">{% include 'svg-gift' %}Gift? <a href="javascript:add_note();" class="add-note">Add a Note</a></div>
+        <div class="cart-mini-note-action">
+          <p><strong>Gift Message</strong><span class="note-option"><a href="javascript:option_edit();">Edit</a>{% comment %}|<a href="javascript:option_remove();">Remove</a>{% endcomment %}</span></p>
+          <div class="note-preview">{{ cart.note }}</div>
+          <div class="note-edit">
+            <input type="text" name="note" class="note-text" maxlength="200" placeholder="Type your message here." value="{{ cart.note }}" />
+            <input type="submit" name="update" class="note-save" value="Save" onclick="updateItemFromForm('add-to-cart-form');return false">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  {% else %}
+  <div class="content no-item">
+    Your cart is currently empty.
+  </div>
+  {% endif %}
+</div>

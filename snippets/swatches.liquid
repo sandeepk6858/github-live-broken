@@ -1,0 +1,17 @@
+{% assign swatches_array = "dark-red, red, blue, light-blue, dark-blue, green, light-green, pink, yellow, purple, black, aqua, rose-gold, yellow-gold, white-gold, platinum" | split: ", " %}
+
+{% assign codes = "6b0014, 9d010f, 1825a5, 9cc4fa, 000856, 095f00, 99cf81, fea3ec, e5c700, 8444c0, 000000, 8be9ea, eba88e, fbd292, cccbd1, 807f83" | split: ", " %}
+
+<div class="swatches">
+{% assign reversed_product_tags = product.tags | reverse %}
+{% for tag in reversed_product_tags %}
+  {% if tag contains 'swatch' %}
+    {% assign updated_tag = tag | remove: 'swatch-' %}
+    {% for swatch in swatches_array %}
+      {% if swatch == updated_tag %}
+        <div style="background: #{{ codes[forloop.index0] }}"></div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+</div>

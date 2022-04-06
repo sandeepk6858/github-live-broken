@@ -1,0 +1,5 @@
+{%- if request.page_type contains 'cart' or request.page_type contains 'product' -%}
+{% render 'globo.alsobought.template' %}
+<div id="globoRelatedProducts"></div>
+<script data-instant-track type="text/javascript">if (typeof globoAlsoBought !== 'undefined') globoAlsoBought.init();</script>
+{%- endif -%}

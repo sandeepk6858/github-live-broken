@@ -1,0 +1,1 @@
+var globoAlsoBoughtInit = true;

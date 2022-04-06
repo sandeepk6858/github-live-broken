@@ -1,0 +1,28 @@
+<!--- add extra attributes details using metafields !--->
+
+{% comment %}<p><br /><strong>Product Details:</strong></p>{% endcomment %}
+<table id="metafields-details"> 
+  
+  
+  
+  {% for field in product.metafields['Product Attributes'] %}
+  {% capture values %}{{ field | last }}{% endcapture %}
+  {% unless values == 'NULL' %}
+   <tr>
+     <td>{{ field | first }}</td>
+     <td>{{ field | last }}</td>
+  </tr>
+  {% endunless %}
+   {% endfor %} 
+  {% for field in product.metafields['product_attributes'] %}
+  {% capture values %}{{ field | last }}{% endcapture %}
+  {% unless values == 'NULL' %}
+   <tr>
+     <td>{{ field | first | replace: '_' ,' '}}</td>
+     <td>{{ field | last }}</td>
+   </tr>
+ 
+  {% endunless %}
+   {% endfor %}
+  
+</table>

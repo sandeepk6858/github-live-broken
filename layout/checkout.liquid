@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+
+  <script src="https://cdn.yottaa.com/rapid.min.js?key=pN_qV_vpkwrqBg"></script>
+  <script>
+    Yo.configure('https://qoe-1.yottaa.net/api/v1/configure.rapid.js?key=pN_qV_vpkwrqBg');
+  </script>
+
+
+
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+    
+<!-- Begin Inspectlet Asynchronous Code -->
+<script type="text/javascript">
+(function() {
+window.__insp = window.__insp || [];
+__insp.push(['wid', 1451826498]);
+var ldinsp = function(){
+if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1451826498&r=' + Math.floor(new Date().getTime()/3600000); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+setTimeout(ldinsp, 0);
+})();
+</script>
+<!-- End Inspectlet Asynchronous Code -->
+      
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    <style>
+      .customs-notice {
+        display: none;
+        margin-top: 20px;
+        padding: 10px;
+        color: #6C2391;
+        border: 1px solid #a88fb6;
+        border-radius: 5px;
+      }
+    </style>
+  
+<!-- GSSTART Show variants. Do not change -->
+{% if request.path contains "/products/" %}{% else %}{% endif %}
+<!-- Show variants code end. Do not change GSEND --></head>
+  <body>
+    
+    {{ skip_to_content_link }}
+
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+            <div class="customs-notice">
+              International Orders (orders outside the USA): Please note that import duties/custom fees which are not included in your order may be charged by the country in which you reside.
+            </div>
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+    
+    {% comment %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ 'checkout.js' | asset_url }}"></script>
+    {% endcomment %}
+    <script>
+      Checkout.$(document).ready(function()  {
+        if (Shopify.Checkout.step === 'contact_information') {
+          var selectedCountry = Checkout.$("div[data-address-field='country'] select").children("option:selected").val();
+          if (selectedCountry !== "United States") {
+            Checkout.$(".customs-notice").show();
+          } 
+          Checkout.$("div[data-address-field='country'] select").change(function() {
+            selectedCountry = Checkout.$(this).children("option:selected").val();
+            if (selectedCountry !== "United States") {
+              Checkout.$(".customs-notice").show();
+            } else {
+              Checkout.$(".customs-notice").hide();
+            }
+          });
+        }
+      });
+    </script>
+  
+<!-- GSSTART Show variants BODY. Do not change -->{% if collection.products %}
+<div style="display: none !important;">
+  {% paginate collection.products by 50 %}{% for product in collection.products %}{% assign imagescount = product.images | size %}{% if imagescount > 1 %}
+  <div style="display: none !important;" class="gsProductVariants" gsProductHandler="{{ product.handle }}" >{% assign variantImgsUsedStr = "" %} {% assign variantBySizeUsedStr = "" %}{% assign sizeoptionnr = 0 %}
+{% for option in product.options %}{% capture optioncaseins %}{{option | downcase}}{% endcapture %}{% if optioncaseins contains "size" or optioncaseins contains "rösse" or optioncaseins contains "المقاس" or optioncaseins contains "oko" or optioncaseins contains "eden" or optioncaseins contains "größe" or optioncaseins contains "ozmiar" or optioncaseins contains "torlek" or optioncaseins contains "aille" or optioncaseins contains "alla" or optioncaseins contains "amaño" or optioncaseins contains "גודל" or optioncaseins contains "サイズ" or optioncaseins contains "taille" or optioncaseins contains "eggiseno" or optioncaseins contains "aat" or optioncaseins contains "tamanho" or optioncaseins contains "rrelse" or optioncaseins contains "siza" %}{% assign sizeoptionnr = forloop.index %}{% if product.options.size == 1 %}{% endif %}{% if optioncaseins contains "color" or optioncaseins contains "colour" or optioncaseins contains "farge"  %}{% assign sizeoptionnr = 0 %}{% endif %}{% endif %}{% endfor %}
+    {% for variant in product.variants %}{% assign featuredImageSize = variant.featured_image | size %}{% if featuredImageSize > 0  %}{% if variantImgsUsedStr contains "IGNOREGS" %}{% else %}{% assign variantImgsUsedStr = variantImgsUsedStr | append: variant.featured_image %}{% assign canAddVariant = true %}{% if sizeoptionnr == 1 %}{% assign optionCheckVal = ";" | append: variant.option2 | append: variant.option3 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}{% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option2 | append: variant.option3 | append: ";" %}{% endif %}{% endif %}
+    {% if sizeoptionnr == 2 %}{% assign optionCheckVal = ";" | append: variant.option1 | append: variant.option3 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}
+                {% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option1 | append: variant.option3 | append: ";" %}{% endif %}{% endif %} {% if sizeoptionnr == 3 %}{% assign optionCheckVal = ";" | append: variant.option1 | append: variant.option2 | append: ";" %}{% if variantBySizeUsedStr contains optionCheckVal %}
+                {% assign canAddVariant = false %}{% else %}{% assign variantBySizeUsedStr = variantBySizeUsedStr | append: ";" | append: variant.option1 | append: variant.option2 | append: ";" %}{% endif %}{% endif %} {% if canAddVariant == true %}
+    <p vcontinue="{{ variant.inventory_policy }}" vquantity="{{ variant.inventory_quantity }}" vavailable="{{ variant.available }}" variantpriceid="{{ variant.id }}" originalcompprice='{{ product.compare_at_price_min | money_without_trailing_zeros | escape }}' originalprice='{{ product.price | money_without_trailing_zeros | escape }}' minprice='{{ product.price_min | money_without_trailing_zeros | escape }}' comparePrice='{{ variant.compare_at_price | money_without_trailing_zeros | escape }}' variantPrice='{{ variant.price | money_without_trailing_zeros | escape }}'></p>
+    <p varianttitleid="{{ variant.id }}" sizeoptionnr="{{ sizeoptionnr }}" optionuidtwo="{{ product.id }}{{ variant.option2 | escape }}" optiontwo="{{ variant.option2 | escape }}" originaltitle="{{ product.title | escape }}" variantTitle="{{ variant.title | escape }}" optionuid="{{ product.id }}{{ variant.option1 | escape }}"></p>
+       <span variantid="{{ variant.id }}" imgwidth="{{ variant.featured_image.width }}" imgheight="{{ variant.featured_image.height }}" gsvariantimage="{{ variant.featured_image | img_url: '256x' }}"></span>
+    {% endif %}{% endif %}{% endif %}{% endfor %}
+  </div>{% endif %}{% endfor %}{% endpaginate %}{% endif %}
+  {% if collection.products %}
+        <div style="display: none !important;" class="gsProductImages" >
+        {% paginate collection.products by 50 %}{% for product in collection.products %} {% assign imagescount = product.images | size %}{% if imagescount > 1 %}{% for image in product.images  limit:1 %}
+                                        <span gsProductHandle="{{ product.handle }}" firstImage="{{ image | img_url: '256x' }}"></span>
+                                {% endfor %}{% endif %}{% endfor %}{% endpaginate %}
+  </div>
+  </div>
+    {% endif %} <!-- Show variants code end BODY. Do not change GSEND --></body>
+</html>

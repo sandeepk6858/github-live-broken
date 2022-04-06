@@ -1,0 +1,74 @@
+{%- assign manual_collection = false -%}
+  {%- if product.collections -%}
+    {%- for collection in product.collections -%}
+      {%- if collection.handle != 'all' and manual_collection == false -%}{%- assign manual_collection = collection -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <script type="text/javascript">
+    {%- assign assets_url = 'product-1.png' | asset_img_url: '50x' -%}
+    {%- assign assets_url = assets_url | split: 'product-1_50x.png' -%}
+    window.moneyFormat = "{{ shop.money_format | replace:'"',"'" }}";
+    window.globoAlsoBoughtMoneyFormat = "{{ shop.money_format | replace:'"',"'" }}";
+    window.shopCurrency = "{{ shop.currency }}";
+    window.assetsUrl = '{{ assets_url[0] }}';
+  </script>
+  {{ 'globo.alsobought.css' | asset_url | stylesheet_tag }}  <script src="{{ 'globo.alsobought.js' | asset_url }}" data-instant-track type="text/javascript"></script>
+  <script data-instant-track>
+    var globoAlsoBought = new globoAlsoBought({
+      apiUrl: "https://related-products.globosoftware.net/v2/public/api",
+      shop: "{{ shop.permanent_domain }}",
+      domain: "{{ shop.domain }}",
+      view_name: 'globo.related',
+      cart_properties_name: 'utm_source',
+      cart_properties_value: 'globoRelatedProducts',
+      manualRecommendations: {},
+      discount: false,
+      redirect: true,
+      exclude_tags: [],
+      carousel_items: 6,
+      carousel_autoplay: false,
+      productBoughtTogether: {
+        enable: true,
+        limit: 10,
+        random: false,
+        template: 2,
+        thisItem: true,
+        conditions: ["vendor","type","collection","tags","global"]
+      },
+      productRelated: {
+        enable: true,
+        limit: 10,
+        random: false,
+        template: 1,
+        thisItem: false,
+        conditions: ["vendor","type","collection","tags","global"]
+      },
+      cart: {
+        enable: true,
+        limit: 10,
+        random: false,
+        template: 3,
+        conditions: ["tags","global"],
+        products: [{%- for item in cart.items -%}{id: {{item.product.id}}, vendor: {{item.product.vendor | json}}, product_type: {{item.product.product_type | json}}, tags: {{item.product.tags | json}}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+      },
+      {%- if product -%}
+        product: {
+          id: {{ product.id | json }},
+          title: {{ product.title | json }},
+          handle: {{ product.handle | json }},
+          price: {{ product.price }},
+          compare_at_price: {% if product.compare_at_price %}{{ product.compare_at_price }}{% else %}null{% endif %},
+          images: ["{% if product.featured_image %}{{ product.featured_image | img_url: 'master' }}{% endif %}"],
+          variants: {{ product.variants | json }},
+          available: {{ product.available }},
+          vendor: {{ product.vendor | json }},
+          product_type: {{ product.type | json }},
+          tags: {{ product.tags | json }},
+          collection: {%- if collection -%}{{ collection.handle | json }}{%- elsif manual_collection -%}{{ manual_collection.handle | json }}{%- else -%}null{%- endif -%}        },
+      {%- endif -%}
+      no_image_url: "https://cdn.shopify.com/s/images/admin/no-image-large.gif"
+    });
+  </script>
+  <script src="{{ 'globo.alsobought.data.js' | asset_url }}" data-instant-track type="text/javascript"></script>
+  

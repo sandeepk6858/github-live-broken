@@ -1,0 +1,52 @@
+{% paginate search.results by 10 %}
+
+<div class="page-width">
+  <div class="section-header text-center">
+  {% if search.performed and search.results_count == 0 %}
+    <hr class="hr--small hr--invisible">
+      <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
+  {% else %}
+    <h1 class="h2">{{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h1>
+  {% endif %}
+  </div>
+</div>
+
+
+{% if search.performed %}
+  {% if search.results_count > 0 %}
+    <hr>
+  {% endif %}
+  <div class="page-width list-view-items">
+    {% for item in search.results %}
+  {% if item.object_type == 'product' and item.type == 'SHOPSTORM_HIDDEN_PRODUCT' %}{% continue %}{% endif %}
+
+      <a href="{{ item.url }}" class="list-view-item">
+        {% if item.object_type == 'product' %}
+          {% include 'product-card-list', product: item %}
+        {% else %}
+          {% if item.image %}
+            <div class="list-view-item__image-column">
+              <div class="list-view-item__image-wrapper">
+                <img class="list-view-item__image" src="{{ item.image.src | img_url: '600x600' }}" alt="{{ item.image.alt | escape }}">
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="list-view-item__title-column">
+            <div class="list-view-item__title">{{ item.title }}</div>
+            <div class="">
+              {% if item.published_at %}{{ item.published_at | date: "%b %d, %Y" }} &#8212; {% endif %}
+              {{ item.content | strip_html | truncate: 200 }}
+            </div>
+          </div>
+        {% endif %}
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if paginate.pages > 1 %}
+    {% include 'pagination' %}
+  {% endif %}
+{% endif %}
+
+{% endpaginate %}

@@ -1,0 +1,227 @@
+<!-- SEO, JSON‑LD, Schema --> 
+ 
+        {% assign grss_how_to = product.metafields.instructions.grss_how_to %}
+        {{grss_how_to}}
+
+        {% assign grss_faq = product.metafields.instructions.grss_faq %}
+        {{grss_faq}}
+        {% comment %} startProductGrss {% endcomment %} 
+{% if template.name == "product" %}
+{% assign fa_current_variant = product.selected_or_first_available_variant %}
+<script type="application/ld+json" id="grss_product">
+{
+	"@context": "http://schema.org/",
+	"@type": "Product",
+  "@id": {{ canonical_url | append: '#product' | json }},
+	"url": "{{ shop.url | append: '/products/' | append: product.handle }}",
+	"name": "{{ product.title | escape}}",
+	"image": "{{ product.featured_image.src | img_url: 'master' }}",
+	"description": "{{ page_description | escape }}",
+	"sku": "{{ product.selected_or_first_available_variant.sku }}",
+	{%- if product.selected_or_first_available_variant.mpn -%}
+	"mpn": "{{ product.selected_or_first_available_variant.mpn }}",
+			{%- else -%}
+	"mpn": "{{ product.selected_or_first_available_variant.sku }}",
+			{%- endif -%}
+	"brand": {
+		"@type": "Brand",
+		"name": "{{ product.vendor | strip_html | escape}}"
+	}, 
+
+	"offers": {% if product.variants.size > 1 %}[{% endif %}
+		{%- for variant in product.variants -%}
+		{
+			"@type" : "Offer",
+			"priceCurrency": "{{ cart.currency.iso_code }}",
+			"price": "{{ variant.price | money_without_currency  | strip_html | remove: ',' }}",
+			"itemCondition" : "http://schema.org/NewCondition",
+			"availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+			"url" : "{{ shop.url }}{{ variant.url }}",
+			{%- if variant.image -%}
+			{% assign variant_image_size = variant.image.width | append: 'x' %}
+			"image": "http:{{ variant.image.src | img_url: variant_image_size }}",
+			{%- else -%}
+			"image": "https:{{ product.featured_image.src | img_url: 'grande' }}",
+			{%- endif -%}
+			{%- if variant.title != 'Default Title' -%}
+			"name" : "{{ product.title | strip_html | escape }} - {{ variant.title | escape }}",
+			{%- else -%}
+			"name" : "{{ product.title | strip_html | escape }}",
+			{%- endif -%}
+			 "gtin": "{{product.selected_or_first_available_variant.barcode}}",
+			{%- if variant.barcode.size == 8 -%}
+			"gtin8": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 12 -%}
+			"gtin12": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 13 -%}
+			"gtin13": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 14 -%}
+			"gtin14": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.sku != blank -%}
+			"sku": "{{ variant.sku }}",
+			{%- else -%}
+			"sku": "{{ variant.id }}",
+			{%- endif -%}
+			{%- if product.description != blank -%}
+			"description" : {{ product.description | strip_html | json }},
+			{%- endif -%}
+			"priceValidUntil": "{{ 'now' | date: '%s' | plus: 2592000 | date: '%Y-%m-%d' | uri_encode | replace:'+','%20' }}"
+		}
+		{%- unless forloop.last -%},{%- endunless -%}
+		{%- endfor -%}
+		{%- if product.variants.size > 1 -%}]
+		 {%- endif -%}
+}
+</script>
+
+
+
+
+{% endif %}
+{% comment %} endProductGrss {% endcomment %}
+
+{% comment %} startLogoGrss {% endcomment %} 
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	"image": [
+	"https://cdn.shopify.com/s/files/1/2395/3423/files/logo-diamond-seamless-rings-social-share-button_100x100.jpg?v=1632502149",
+	"https://cdn.shopify.com/s/files/1/2395/3423/files/logo-diamond-seamless-rings-social-share-button_400x300.jpg?v=1632502149",
+	"https://cdn.shopify.com/s/files/1/2395/3423/files/logo-diamond-seamless-rings-social-share-button_1600x900.jpg?v=1632502149"
+	],
+	"name": "FreshTrends",
+	"url": "www.freshtrends.com",
+	"description": "Fine body piercing jewelry hand made to order from 14k gold & platinum, with genuine diamonds and gemstones. Try custom fit piercing jewelry made just for your anatomy. Treat your piercings to the best with hand made items made right  here in the USA from the finest materials.",
+	"telephone": "561-250-0841",
+	"logo": "https://cdn.shopify.com/s/files/1/2395/3423/files/NEW-FreshTrends_Logo-FINE_BODY_JEWELRY-300dpi_360x.jpg",
+	"sameAs": ["https://www.facebook.com/FreshTrends/","https://www.instagram.com/freshtrends/"],
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": "378 Northlake Blvd. #112",
+		"addressLocality": "North Palm Beach",
+		"addressRegion": "Florida",
+		"postalCode": "33408",
+		"addressCountry": "United States" 
+	}
+}
+</script>
+{% comment %} endLogoGrss {% endcomment %}
+
+
+
+{% comment %} startBreadcrumbGrss {% endcomment %}
+{% if template.name == "collection" %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [{
+		"@type": "ListItem",
+		"position": 1,
+		"name": "{{shop.name}}",
+		"item": "{{ shop.url }}"
+		},{
+		"@type": "ListItem",
+		"position": 2,
+		"name": "{{collection.title | strip_html | escape}}",
+		"item": "{{ shop.url }}{{collection.url}}"
+	}]
+}
+</script>
+{% endif %}
+{% if template.name == "product" %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [{
+		"@type": "ListItem",
+		"position": 1,
+		"name": "{{shop.name}}",
+		"item": "{{ shop.url }}"
+		},{
+		"@type": "ListItem",
+		"position": 2,
+		"name": "{{product.title | strip_html | escape}}",
+		"item": "{{ shop.url }}{{product.url}}"
+	}]
+}
+</script>
+{% endif %}
+{% comment %} endBreadcrumbGrss {% endcomment %}
+{% comment %} startCarouselGrss {% endcomment %}
+{% if template.name == "collection" %}
+<script type="application/ld+json">
+{
+	 "@context":"https://schema.org",
+	 "@type":"ItemList",
+	"itemListElement":[
+	{% for product in collection.products %}
+	{
+		"@type":"ListItem",
+		"position":{{ forloop.index }},
+		"url":"{{shop.domain | append: "/products/" | append: product.handle }}",
+		"description":{{product.description | strip_html | escape | json | row }}
+,		"image": "{{ product.featured_image.src | img_url: "master" }}",
+		"name": "{{product.title | strip_html | escape}}"
+	}
+	{%- unless forloop.last -%},{%- endunless -%}
+	{% endfor %}
+	]
+}
+</script>
+{% endif %}
+{% comment %} endCarouselGrss {% endcomment %}
+{% comment %} startSearchGrss {% endcomment %}
+<script type="application/ld+json">
+{
+ 	"@context": "https://schema.org",
+ 	"@type": "WebSite",
+ 	"url": "{{ shop.url }}",
+ 	"potentialAction": {
+ 	 	"@type": "SearchAction",
+ 	 	 "target": "https://www.freshtrends.com/search?q={search_term}",
+ 	 	"query-input": "required name=search_term"
+ 	}
+}
+</script>
+{% comment %} endSearchGrss {% endcomment %}
+
+{% comment %} startArticleGrss {% endcomment %}
+{% if template.name == "article" %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"mainEntityOfPage": {
+	"@type": "WebPage",
+	"@id": "{{ shop.url }}{{ article.url }}"
+	},
+	"headline": "{{article.title | strip_html | escape}}",
+	"image": [
+	"{{article.image.src | img_url: 'large'}}"
+	],
+	"datePublished": "{{article.published_at}}",
+	"author": {
+		"@type": "Person",
+		"name": "Ximena Huerta"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "Fresh Trends",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://cdn.shopify.com/s/files/1/2395/3423/files/NEW-FreshTrends_Logo-FINE_BODY_JEWELRY-300dpi_360x.jpg?v=1549311442"
+		}
+	},
+	"description": "{{page_description | default: shop.description | strip_html | escape}}",
+	"dateModified": "{{ article.updated_at }}"}
+</script>
+{% endif %}
+{% comment %} endArticleGrss {% endcomment %}
+

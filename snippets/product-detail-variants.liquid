@@ -1,0 +1,7 @@
+<script type="text/javascript" >
+var variantMetafields = [];
+  var attrFields = "{{ section.settings.attribute_setting | replace: ' ','' | strip  | strip_newlines }}";
+{% for variant in product.variants %}
+  variantMetafields[{{ variant.id }}] = {{ variant.metafields.product_attributes  | json }};
+{% endfor %}  
+</script>
